@@ -1,9 +1,13 @@
 [project]
-name = "salt-tower"
+name = "salt-tower-cache"
 version = "1.12.0"
-description = "A Flexible External Salt Pillar Module"
-authors = [{ name = "Jan Graichen", email = "jgraichen@altimos.de" }]
-dependencies = ["salt"]
+description = "A Flexible External Salt Pillar Module (custom spin)"
+authors = [{ name = "Jan Graichen", email = "jgraichen@altimos.de" }, { name = "Mike Sager", email = "mike@mikesager.name" }]
+dependencies = [
+    "salt",
+    "filelock~=3.29.0",
+    "zstandard~=0.25.0",
+]
 requires-python = ">=3.10,<4.0"
 readme = "README.md"
 license = { text = "MIT" }
