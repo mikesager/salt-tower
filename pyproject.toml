@@ -1,4 +1,4 @@
-000[project]
+[project]
 name = "salt-tower"
 version = "1.13.0"
 description = "A Flexible External Salt Pillar Module (custom spin)"
