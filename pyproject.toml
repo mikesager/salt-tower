@@ -1,6 +1,6 @@
-[project]
+000[project]
 name = "salt-tower"
-version = "1.12.0"
+version = "1.13.0"
 description = "A Flexible External Salt Pillar Module (custom spin)"
 authors = [{ name = "Jan Graichen", email = "jgraichen@altimos.de" }, { name = "Mike Sager", email = "mike@mikesager.name" }]
 dependencies = [
@@ -28,24 +28,23 @@ pillar_dirs = "salt_tower.loader:pillar_dirs"
 render_dirs = "salt_tower.loader:renderers_dirs"
 
 [project.optional-dependencies]
-test = ["pylint==4.0.5", "pytest==9.0.3"]
 docs = [
-    "mike==2.1.4",
+    "mike==2.2.0",
     "mkdocs-awesome-pages-plugin==2.10.1",
     "mkdocs-git-revision-date-plugin==0.3.2",
-    'mkdocs-material==9.7.6',
+    'mkdocs-material==9.7.7',
     "setuptools",                             # required by mike
 ]
 
 [dependency-groups]
+test = ["pylint==4.1.3", "pytest==9.1.1"]
+lint = ["ruff==0.17.2"]
 dev = [
-    "mypy==1.20.2",
-    "pylint==4.0.5",
+    { include-group = "test" },
+    { include-group = "lint" },
+    "mypy==2.4.1",
+    "nox~=2025.11.12",
     "pyright~=1.1.356",
-    "pytest==9.0.3",
-    "ruff==0.15.12",
-    "tox==4.53.0",
-    "tox-uv~=1.29.0",
 ]
 
 [build-system]
@@ -54,7 +53,13 @@ build-backend = "hatchling.build"
 
 [tool.pyright]
 include = ["salt_tower", "test"]
-exclude = ["test/fixtures"]
+exclude = [
+    "test/fixtures",
+    "**/node_modules",
+    "**/__pycache__",
+    "**/.*",
+    ".venv",
+]
 
 [tool.pytest.ini_options]
 testpaths = ["test"]
@@ -67,8 +72,8 @@ docstring-code-format = true
 
 [tool.ruff.lint]
 extend-select = ["I"]
-
-[tool.uv]
-# Salt's legacy setup.py requires old setuptools. Since uv 0.6.0, it
-# does not fall back to reading requirements from egg-info.
-build-constraint-dependencies = ["setuptools<75.6"]
+ignore = [
+    # Invalid tower data is a data error surfaced to the user, not a
+    # programming error, therefore the pillar raises `ValueError`.
+    "TRY004",
+]
